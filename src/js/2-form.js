@@ -1,33 +1,65 @@
-const form = document.querySelector('.feedback-form');
-const STORAGE_KEY = 'feedback-form-state';
+const STORAGE_KEY = "feedback-form-state";
 
-let formData = {
-    email: '',
-    message: '',
+// Оголошуємо об'єкт для збереження даних форми
+const formData = {
+  email: "",
+  message: ""
 };
 
-form.addEventListener('input', event => {
-    const { name, value } = event.target;
-    formData[name] = value;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
-});
+const form = document.querySelector(".feedback-form");
 
-const savedData = localStorage.getItem(STORAGE_KEY);
-if (savedData) {
-    formData = JSON.parse(savedData);
-    form.elements.email.value = formData.email || '';
-    form.elements.message.value = formData.message || '';
+// Функція для збереження даних у localStorage
+function saveToLocalStorage() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
 }
 
-form.addEventListener('submit', event => {
-    event.preventDefault();
-    const { email, message } = formData;
-    if (email.trim() === '' || message.trim() === '') {
-        alert('Fill please all fields');
-        return;
+// Функція для завантаження даних із localStorage і заповнення форми
+function populateForm() {
+  const savedData = localStorage.getItem(STORAGE_KEY);
+  if (savedData) {
+    try {
+      const parsedData = JSON.parse(savedData);
+      // Записуємо у formData без undefined
+      formData.email = parsedData.email || "";
+      formData.message = parsedData.message || "";
+
+      form.elements.email.value = formData.email;
+      form.elements.message.value = formData.message;
+    } catch (error) {
+      console.error("Помилка при читанні даних з localStorage:", error);
     }
-    console.log('Form Data:', formData);
-    formData = { email: '', message: '' };
-    localStorage.removeItem(STORAGE_KEY);
-    form.reset();
+  }
+}
+
+// Делегування події input для всього форми
+form.addEventListener("input", event => {
+  const target = event.target;
+  if (target.name === "email" || target.name === "message") {
+    // Обрізаємо пробіли з початку і кінця
+    formData[target.name] = target.value.trim();
+    saveToLocalStorage();
+  }
 });
+
+// Обробник submit
+form.addEventListener("submit", event => {
+  event.preventDefault();
+
+  // Перевірка, що обидва поля заповнені
+  if (formData.email === "" || formData.message === "") {
+    alert("Fill please all fields");
+    return;
+  }
+
+  console.log("Відправлені дані форми:", formData);
+
+  // Очищуємо локальне сховище, об'єкт і форму
+  localStorage.removeItem(STORAGE_KEY);
+  formData.email = "";
+  formData.message = "";
+  form.reset();
+});
+
+
+// При завантаженні сторінки заповнюємо форму
+populateForm();
