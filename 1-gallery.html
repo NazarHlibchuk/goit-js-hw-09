@@ -3,7 +3,107 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Gallery</title>
+
+  
+    <style>
+body {
+  background-color: #f5f7fa;
+  font-family: 'Inter', sans-serif;
+  color: #1e1e1e;
+  margin: 0;
+  padding: 40px 24px;
+  display: flex;
+  justify-content: center;
+}
+
+/* --- Контейнер галереї --- */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
+  gap: 28px;
+  max-width: 1080px;
+  width: 100%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* --- Картинка --- */
+.gallery-item {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0px 8px 16px rgba(34, 60, 80, 0.12);
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.gallery-item:hover,
+.gallery-item:focus-within {
+  box-shadow: 0px 12px 28px rgba(34, 60, 80, 0.18);
+  transform: translateY(-4px);
+}
+
+/* --- Посилання для зображення --- */
+.gallery-link {
+  display: block;
+  outline: none;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* --- Зображення --- */
+.gallery-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+  border-radius: 12px 12px 0 0;
+}
+
+.gallery-item:hover .gallery-image,
+.gallery-item:focus-within .gallery-image {
+  transform: scale(1.05);
+}
+
+/* --- Підписи у SimpleLightbox --- */
+.sl-caption {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 1.125rem;
+  color: #222222;
+  text-align: center;
+  padding: 14px 20px;
+  background-color: #ffffffdd; 
+  border-radius: 0 0 12px 12px;
+  max-width: 100%;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+/* --- Адаптивність --- */
+@media (max-width: 768px) {
+  .gallery {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .gallery-image {
+    height: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .gallery-image {
+    height: 160px;
+  }
+}
+</style>
     <script type="module" crossorigin src="/goit-js-hw-09/1-gallery.js"></script>
     <link rel="modulepreload" crossorigin href="/goit-js-hw-09/assets/vendor-CgTBfC_f.js">
     <link rel="stylesheet" crossorigin href="/goit-js-hw-09/assets/vendor-DkczhqSJ.css">
